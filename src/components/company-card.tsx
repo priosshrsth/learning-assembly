@@ -142,7 +142,7 @@ export async function CompanyGrid({ token }: Props) {
   "use cache";
   cacheLife("hours");
   cacheTag("companies-grid");
-  const client = new AssemblyClient({ token });
+  const client = await AssemblyClient.new(token);
   const response = await client.api.listCompanies({ limit: 100, isPlaceholder: false });
   const companies = response?.data || [];
   if (!companies || companies.length === 0) {

@@ -26,7 +26,7 @@ export async function ProfileCard({ token }: Props) {
   "use cache";
   cacheTag(`internal-user-${token}`);
 
-  const client = new AssemblyClient({ token });
+  const client = await AssemblyClient.new(token);
 
   const payload = await client.api.getTokenPayload?.();
   const profile = payload?.internalUserId

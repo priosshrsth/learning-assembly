@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Suspense, ViewTransition } from "react";
 import { ProfileCard } from "src/components/profile-card";
-import { getAssemblyClient } from "src/lib/assembly/assembly-client";
+import { AssemblyClient } from "src/lib/assembly/assembly-client";
 import type { AppPageProps } from "src/lib/next/next.types";
 
 export default async function InternalDashboard(props: AppPageProps) {
-  const client = await getAssemblyClient(props);
+  const client = await AssemblyClient.new(props);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-50 dark:from-black dark:via-zinc-950 dark:to-black font-sans">

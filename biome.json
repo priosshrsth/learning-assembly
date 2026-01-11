@@ -1,37 +1,43 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["ultracite/core", "ultracite/react", "ultracite/next"],
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "includes": ["!node_modules", "!.next", "!dist", "!build"]
   },
   "formatter": {
     "enabled": true,
+    "useEditorconfig": true,
+    "formatWithErrors": true,
+    "lineWidth": 120,
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "bracketSpacing": true
   },
   "linter": {
-    "enabled": true,
     "rules": {
-      "recommended": true,
-      "suspicious": {
-        "noUnknownAtRules": "off"
+      "style": {
+        "useConsistentTypeDefinitions": {
+          "level": "warn",
+          "options": {
+            "style": "interface"
+          }
+        }
+      },
+      "nursery": {
+        "useSortedClasses": "off"
       }
-    },
-    "domains": {
-      "next": "recommended",
-      "react": "recommended"
     }
   },
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": "on"
-      }
+  "json": {
+    "parser": {
+      "allowComments": true,
+      "allowTrailingCommas": false
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }

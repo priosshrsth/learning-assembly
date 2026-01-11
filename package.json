@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "ultracite check --",
     "lint:fix": "ultracite fix --",
-    "chec-types": "tsc --noemit"
+    "check-types": "tsc --noemit"
   },
   "packageManager": "bun@1.3.5",
   "dependencies": {

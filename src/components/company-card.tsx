@@ -1,7 +1,7 @@
-"use client";
-
 import { Building2, Calendar, Info } from "lucide-react";
+import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
+import { AssemblyClient } from "src/lib/assembly/assembly-client";
 
 export interface CompanyData {
   id?: string;
@@ -134,11 +134,17 @@ export function CompanyCard({ company }: CompanyCardProps) {
   );
 }
 
-interface CompanyGridProps {
-  companies: CompanyData[];
+interface Props {
+  token: string;
 }
 
-export function CompanyGrid({ companies }: CompanyGridProps) {
+export async function CompanyGrid({ token }: Props) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("companies-grid");
+  const client = new AssemblyClient({ token });
+  const response = await client.api.listCompanies({ limit: 100, isPlaceholder: false });
+  const companies = response?.data || [];
   if (!companies || companies.length === 0) {
     return (
       <div className="w-full max-w-6xl rounded-2xl bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 p-12 shadow-xl border border-zinc-200 dark:border-zinc-800">
@@ -151,12 +157,24 @@ export function CompanyGrid({ companies }: CompanyGridProps) {
   }
 
   return (
-    <div className="w-full max-w-6xl">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {companies.map((company) => (
-          <CompanyCard company={company} key={company.id || Math.random()} />
-        ))}
+    <>
+      <div className="w-full max-w-6xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {companies.map((company) => (
+            <CompanyCard company={company} key={company.id || Math.random()} />
+          ))}
+        </div>
       </div>
-    </div>
+      {/* Pagination Info */}
+      {response?.nextToken && (
+        <div className="w-full max-w-6xl mt-4">
+          <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+            <p className="text-sm text-blue-700 dark:text-blue-300 text-center">
+              More companies available. Pagination not yet implemented.
+            </p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

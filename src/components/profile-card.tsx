@@ -1,7 +1,7 @@
-"use client";
-
 import { Building2, Calendar, Mail, Shield, User } from "lucide-react";
+import { cacheTag } from "next/cache";
 import Image from "next/image";
+import { AssemblyClient } from "src/lib/assembly/assembly-client";
 
 export interface ProfileData {
   id?: string;
@@ -18,11 +18,21 @@ export interface ProfileData {
   updatedAt?: string;
 }
 
-interface ProfileCardProps {
-  profile: ProfileData | null;
+interface Props {
+  token: string;
 }
 
-export function ProfileCard({ profile }: ProfileCardProps) {
+export async function ProfileCard({ token }: Props) {
+  "use cache";
+  cacheTag(`internal-user-${token}`);
+
+  const client = new AssemblyClient({ token });
+
+  const payload = await client.api.getTokenPayload?.();
+  const profile = payload?.internalUserId
+    ? await client.api.retrieveInternalUser({ id: payload?.internalUserId })
+    : await client.api.retrieveClient({ id: payload?.clientId as string });
+
   if (!profile) {
     return (
       <div className="w-full max-w-2xl rounded-2xl bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 p-8 shadow-xl border border-zinc-200 dark:border-zinc-800">
@@ -88,7 +98,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         {/* Name and Role */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">{fullName}</h2>
-          {profile.role && (
+          {"role" in profile && profile.role && (
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 border border-blue-500/20 dark:border-blue-500/30">
               <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <span className="text-sm font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide">
@@ -146,17 +156,17 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           )}
 
           {/* Company Access */}
-          {profile.companyAccessList && profile.companyAccessList.length > 0 && (
+          {"companyAccessList" in profile && (profile.companyAccessList?.length ?? 0) > 0 && (
             <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 transition-all hover:bg-zinc-100 dark:hover:bg-zinc-800">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg">
                 <Building2 className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide mb-2">
-                  Company Access ({profile.companyAccessList.length})
+                  Company Access ({profile.companyAccessList?.length ?? 0})
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {profile.companyAccessList.map((company) => (
+                  {profile.companyAccessList?.map((company) => (
                     <span
                       className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800"
                       key={company}
@@ -170,7 +180,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           )}
 
           {/* Access Status */}
-          {profile.isClientAccessLimited !== undefined && (
+          {"isClientAccessLimited" in profile && profile.isClientAccessLimited !== undefined && (
             <div className="flex items-center gap-4 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700">
               <div className="flex-1 flex items-center justify-between">
                 <div className="flex items-center gap-3">

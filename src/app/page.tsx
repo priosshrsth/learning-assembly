@@ -1,50 +1,43 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Suspense } from "react";
+import { ProfileCard } from "src/components/profile-card";
+import { getAssemblyClient } from "src/lib/assembly/assembly-client";
+import type { AppPageProps } from "src/lib/next/next.types";
 
-export default function Home() {
+export default async function ClientDashboard(props: AppPageProps) {
+  const client = await getAssemblyClient(props);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image alt="Next.js logo" className="dark:invert" height={20} priority src="/next.svg" width={100} />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-50 dark:from-black dark:via-zinc-950 dark:to-black font-sans">
+      <main className="flex min-h-screen w-full flex-col items-center gap-8 py-16 px-4 sm:px-8 lg:px-16">
+        {/* Header */}
+        <div className="w-full max-w-2xl text-center mb-4">
+          <h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-2">Internal Dashboard</h1>
+          <p className="text-zinc-600 dark:text-zinc-400">Welcome to your profile overview</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            rel="noopener noreferrer"
-            target="_blank"
+
+        {/* Profile Card */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProfileCard token={client.token} />
+        </Suspense>
+
+        {/* Navigation */}
+        <div className="w-full max-w-2xl flex justify-center mt-4">
+          <Link
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            href={`/internal/companies?token=${client.token}`}
           >
-            <Image alt="Vercel logomark" className="dark:invert" height={16} src="/vercel.svg" width={16} />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <title>Building icon</title>
+              <path
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+              />
+            </svg>
+            View Companies
+          </Link>
         </div>
       </main>
     </div>

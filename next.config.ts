@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
     ];
   },
   allowedDevOrigins: ["*.ngrok.free.app"],
+  cacheComponents: true,
 };
 
 export default nextConfig;

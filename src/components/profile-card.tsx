@@ -24,6 +24,11 @@ interface Props {
 
 export async function ProfileCard({ token }: Props) {
   "use cache";
+  /*
+   * this way on each hard refresh, the cache is busted
+   * But if we wre to say just use internalUserId or clientId as cache tag, how do we handle this?
+   * Maybe it's ok to show stale data for some time? example 15 minutes?
+   */
   cacheTag(`internal-user-${token}`);
 
   const client = await AssemblyClient.new(token);

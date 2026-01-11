@@ -54,7 +54,6 @@ export function CompanyCard({ company }: CompanyCardProps) {
           </div>
         </div>
       )}
-
       {/* Gradient Header */}
       <div
         className="relative h-24 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-600 dark:to-purple-600"
@@ -66,7 +65,6 @@ export function CompanyCard({ company }: CompanyCardProps) {
       >
         <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" />
       </div>
-
       {/* Company Icon/Avatar */}
       <div className="relative px-6 pb-6">
         <div className="flex justify-center -mt-12 mb-4">
@@ -131,9 +129,8 @@ export function CompanyCard({ company }: CompanyCardProps) {
           )}
         </div>
       </div>
-
-      {/* Hover Effect Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      ;
     </div>
   );
 }

@@ -5,7 +5,7 @@ import type { AppPageProps } from "src/lib/next/next.types";
 
 export default async function CompaniesList(props: AppPageProps) {
   const client = await getAssemblyClient(props);
-  const response = await client.api.listCompanies({ limit: 100 });
+  const response = await client.api.listCompanies({ limit: 100, isPlaceholder: false });
   const companies = response?.data || [];
 
   return (

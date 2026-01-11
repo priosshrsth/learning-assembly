@@ -1,20 +1,33 @@
-"use client"; // Error boundaries must be Client Components
+"use client";
 
-import { useEffect } from "react";
+import { Button } from "copilot-design-system";
+import Linkify from "react-linkify";
 
-export default function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
+export default function ClientErrorBoundary({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  console.error(error);
 
   return (
-    <div>
-      <h2>{error.message || "Something went wrong!"}</h2>
-
-      <button onClick={() => reset()} type="button">
-        Try again
-      </button>
-    </div>
+    <main>
+      <div className="flex flex-col items-center justify-center pt-52 pb-4">
+        <p className="mb-2 [&>a:hover]:underline [&>a]:block">
+          <Linkify
+            componentDecorator={(decoratedHref, decoratedText, key) => (
+              <a href={decoratedHref} key={key} rel="noopener noreferrer" target="_blank">
+                {decoratedText}
+              </a>
+            )}
+          >
+            {error.message}.
+          </Linkify>
+        </p>
+        <Button label="Try again" onClick={() => reset()} />
+      </div>
+    </main>
   );
 }

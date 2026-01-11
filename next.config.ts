@@ -22,8 +22,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  allowedDevOrigins: ["*.ngrok.free.app"],
+  allowedDevOrigins: ["59c7c11b0c72.ngrok-free.app"],
   cacheComponents: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

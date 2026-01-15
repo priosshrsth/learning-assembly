@@ -1,0 +1,207 @@
+import type { IconType } from "copilot-design-system";
+import { ClientIcon } from "./client-icon";
+
+const IconsNames = [
+  "AI",
+  "API",
+  "Airtable",
+  "AppSetup",
+  "Archive",
+  "ArrowDownSolid",
+  "ArrowLeft",
+  "ArrowNE",
+  "ArrowRight",
+  "ArrowUpSolid",
+  "AssemblyLogo",
+  "At",
+  "Attachment",
+  "Authentication",
+  "Automation",
+  "Bank",
+  "Billing",
+  "Bold",
+  "Book",
+  "BracketsCurly",
+  "Building",
+  "CSV",
+  "Calendar",
+  "Callout",
+  "Cancel",
+  "CaretDown",
+  "CaretRight",
+  "CaretUp",
+  "Chart",
+  "Check",
+  "Checklist",
+  "ChevronDown",
+  "ChevronLeft",
+  "ChevronRight",
+  "ChevronUp",
+  "Close",
+  "Code",
+  "Comment",
+  "Compass",
+  "Compose",
+  "Contract",
+  "Copy",
+  "Customization",
+  "Dash",
+  "Disconnect",
+  "Doc",
+  "Dollar",
+  "Dot",
+  "Download",
+  "DragDrop",
+  "Duplicate",
+  "Edit",
+  "EditSolid",
+  "Ellipsis",
+  "Email",
+  "EmailRead",
+  "EmailUnread",
+  "Excel",
+  "Export",
+  "Eye",
+  "EyeHidden",
+  "Failed",
+  "FailedSolid",
+  "File",
+  "Files",
+  "Filter",
+  "FitToWidth",
+  "FolderLocked",
+  "Form",
+  "GIF",
+  "Gauge",
+  "Gift",
+  "GraphBarSolid",
+  "H1",
+  "H2",
+  "H3",
+  "Helpdesk",
+  "Home",
+  "Image",
+  "ImageMissing",
+  "InProgress",
+  "Inbox",
+  "Info",
+  "InfoSolid",
+  "Insert",
+  "Invite",
+  "Invoice",
+  "InvoicePaid",
+  "Italicize",
+  "JPG",
+  "Lead",
+  "Link",
+  "List",
+  "Location",
+  "LockFilled",
+  "LogOut",
+  "MOV",
+  "MP3",
+  "MP4",
+  "Marketing",
+  "MassFileShare",
+  "Mention",
+  "Menu",
+  "Message",
+  "Minus",
+  "MobileNumber",
+  "MoreVertical",
+  "Movie",
+  "New",
+  "Notification",
+  "Number",
+  "NumberedList",
+  "PDF",
+  "PNG",
+  "Pause",
+  "Pin",
+  "PlansPayments",
+  "Play",
+  "Plus",
+  "Profile",
+  "Puzzle",
+  "QuestionMark",
+  "QuickBook",
+  "Repeat",
+  "Reply",
+  "Reposition",
+  "ResetZoom",
+  "SVG",
+  "Scale",
+  "Search",
+  "Send",
+  "SendFilled",
+  "Settings",
+  "Share",
+  "ShoppingBag",
+  "Sidebar",
+  "SidebarFilled",
+  "Smile",
+  "Spinner",
+  "SquareSolid",
+  "Star",
+  "Store",
+  "Strikethrough",
+  "Subtask",
+  "Success",
+  "SuccessSolid",
+  "Table",
+  "Tag",
+  "Tasks",
+  "Teams",
+  "Templates",
+  "Text",
+  "ThumbsDown",
+  "ThumbsUp",
+  "Time",
+  "ToDo",
+  "Trash",
+  "UnPin",
+  "Unarchive",
+  "Underline",
+  "Unlock",
+  "UnorderedList",
+  "Upload",
+  "Warning",
+  "WarningSolid",
+  "Web",
+  "ZIP",
+];
+
+export default async function IconsPage() {
+  return (
+    <div className="min-h-dvh p-6">
+      <div className="mb-6">
+        <h1 className="text-lg font-semibold tracking-tight">Copilot Icons</h1>
+        <p className="text-sm text-foreground/60">
+          Rendering icons discovered from <code className="font-mono">copilot-design-system/dist/esm/icons</code>.
+        </p>
+      </div>
+
+      {IconsNames?.length === 0 ? (
+        <div className="rounded-lg border p-4 text-sm text-foreground/70">
+          No icons could be discovered/imported. Verify the installed package has:
+          <div className="mt-2 font-mono text-xs text-foreground/60">
+            node_modules/copilot-design-system/dist/esm/icons
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+          {IconsNames.map((name) => (
+            <div className="group flex flex-col items-center gap-2 rounded-lg border bg-background p-3" key={name}>
+              <div className="grid size-12 place-items-center rounded-md bg-foreground/5">
+                <ClientIcon icon={name as IconType} />
+              </div>
+              <div className="w-full truncate text-center text-xs text-foreground/70" title={name}>
+                {name}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

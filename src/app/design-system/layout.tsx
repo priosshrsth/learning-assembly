@@ -54,18 +54,6 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <span className="text-sm font-semibold tracking-tight">Dashboard</span>
               </div>
 
-              {/* Search */}
-              <div className="flex w-full items-center md:max-w-md">
-                <label className="sr-only" htmlFor="dashboard-search">
-                  Search
-                </label>
-                <input
-                  className="h-9 w-full rounded-md border bg-background px-3 text-sm outline-none placeholder:text-foreground/50 focus-visible:ring-2 focus-visible:ring-foreground/20"
-                  id="dashboard-search"
-                  placeholder="Search…"
-                />
-              </div>
-
               {/* Actions */}
               <div className="ml-auto flex items-center gap-2">
                 <button
@@ -81,33 +69,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
           {/* Content */}
           <main className="flex-1 p-4 md:p-6">
-            {/* Page title */}
-            <div className="mb-6 flex flex-col gap-1">
-              <h1 className="text-lg font-semibold tracking-tight">Overview</h1>
-              <p className="text-sm text-foreground/60">Minimal dashboard shell (sidebar + top bar + content).</p>
-            </div>
-
-            {/* Simple cards */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="rounded-lg border bg-background p-4">
-                <p className="text-xs font-medium text-foreground/60">Revenue</p>
-                <p className="mt-2 text-2xl font-semibold">$12,340</p>
-                <p className="mt-1 text-xs text-foreground/60">+12% from last month</p>
-              </div>
-              <div className="rounded-lg border bg-background p-4">
-                <p className="text-xs font-medium text-foreground/60">Active Users</p>
-                <p className="mt-2 text-2xl font-semibold">1,284</p>
-                <p className="mt-1 text-xs text-foreground/60">+6% from last week</p>
-              </div>
-              <div className="rounded-lg border bg-background p-4">
-                <p className="text-xs font-medium text-foreground/60">Errors</p>
-                <p className="mt-2 text-2xl font-semibold">23</p>
-                <p className="mt-1 text-xs text-foreground/60">-18% from yesterday</p>
-              </div>
-            </div>
-
-            {/* Routed page content */}
-            <div className="mt-6 min-w-0">{children}</div>
+            <div>{children}</div>
           </main>
         </div>
       </div>

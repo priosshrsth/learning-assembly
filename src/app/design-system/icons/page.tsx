@@ -1,4 +1,7 @@
-import type { IconType } from "copilot-design-system";
+"use client";
+
+import { type IconType, Input } from "copilot-design-system";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import { ClientIcon } from "./client-icon";
 
 const IconsNames = [
@@ -171,14 +174,61 @@ const IconsNames = [
   "ZIP",
 ];
 
-export default async function IconsPage() {
+export default function IconsPage() {
+  const [inputValue, setInputValue] = useState("");
+  const [search, setSearch] = useState("");
+
+  const [_isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      startTransition(() => {
+        setSearch(inputValue);
+      });
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [inputValue]);
+
+  const filteredIcons = useMemo(() => {
+    return IconsNames.filter((icon) => icon?.toLowerCase()?.includes(search?.toLowerCase()));
+  }, [search]);
+
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  }, []);
+
   return (
-    <div className="min-h-dvh p-6">
-      <div className="mb-6">
-        <h1 className="text-lg font-semibold tracking-tight">Copilot Icons</h1>
-        <p className="text-sm text-foreground/60">
-          Rendering icons discovered from <code className="font-mono">copilot-design-system/dist/esm/icons</code>.
-        </p>
+    <div className="min-h-dvh px-6">
+      {/* Page title */}
+      <div className="mb-6 flex flex-col gap-1">
+        <h1 className="text-lg font-semibold tracking-tight">Overview</h1>
+        <p className="text-sm text-foreground/60">Minimal dashboard shell (sidebar + top bar + content).</p>
+      </div>
+
+      {/* Simple cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+        <div className="rounded-lg border bg-background p-4">
+          <p className="text-xs font-medium text-foreground/60">Total Icons</p>
+          <p className="mt-2 text-2xl font-semibold">{IconsNames?.length}</p>
+          <p className="mt-1 text-xs text-foreground/60">
+            {IconsNames?.length} icons discovered from copilot-design-system
+          </p>
+        </div>
+      </div>
+      <div className="mb-6 justify-between flex">
+        <div>
+          <h1 className="text-lg font-semibold tracking-tight">Copilot Icons</h1>
+          <p className="text-sm text-foreground/60">
+            Rendering icons discovered from <code className="font-mono">copilot-design-system/dist/esm/icons</code>.
+          </p>
+        </div>
+        <Input
+          className="border-gray-200 border rounded-sm p-2"
+          onChange={handleSearch}
+          placeholder="Search icons.."
+          value={inputValue}
+        />
       </div>
 
       {IconsNames?.length === 0 ? (
@@ -189,8 +239,8 @@ export default async function IconsPage() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-          {IconsNames.map((name) => (
+        <div className="grid gap-3 grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-12">
+          {filteredIcons.map((name) => (
             <div className="group flex flex-col items-center gap-2 rounded-lg border bg-background p-3" key={name}>
               <div className="grid size-12 place-items-center rounded-md bg-foreground/5">
                 <ClientIcon icon={name as IconType} />
